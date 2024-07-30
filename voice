@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# paths
+audio_file="$HOME/.cache/audios.wav"
+transcript_file="$HOME/.cache/transcript.txt"
+model_path="$HOME/.local/share/kdenlive/speechmodels/vosk-model-small-en-us-0.15/"
+
+# ffmpeg recording
+
+# Run ffmpeg and redirect both stdout and stderr to /dev/null
+ffmpeg -y -f pulse -i alsa_input.pci-0000_00_1b.0.analog-stereo -ac 1 -ar 44100 -t 4 "$audio_file" > /dev/null 2>&1
+# runs vosk-transcriber
+vosk-transcriber -m "$model_path" -i "$audio_file" -o "$transcript_file" > /dev/null 2>&1
+
+# transcript content
+cat "$transcript_file"
